@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="John Doe"><title>runtime之objc_setAssociatedObject.md · 过把感情瘾</title><meta name="description" content="runtime之objc_setAssociatedObject：[//]:# (具体看这里iOS objc_setAssociatedObject 关联对象的学习)
+主要函数：123void objc_setAssociatedObject(id object, const void *key, "><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">过把感情瘾</a></h3><div class="description"><p>学习笔记</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">Home</a></li><li><a href="/about">Sobre</a></li><li><a href="/archives">Arquivo</a></li><li><a href="/links">Links</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>runtime之objc_setAssociatedObject.md</a></h3></div><div class="post-content"><h1 id="runtime之objc-setAssociatedObject："><a href="#runtime之objc-setAssociatedObject：" class="headerlink" title="runtime之objc_setAssociatedObject："></a>runtime之objc_setAssociatedObject：</h1><p>[//]:# (具体看这里<a href="https://www.cnblogs.com/someonelikeyou/p/7162613.html" target="_blank" rel="noopener">iOS objc_setAssociatedObject 关联对象的学习</a>)</p>
+<p>主要函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void objc_setAssociatedObject(id object, const void *key, id value, objc_AssociationPolicy policy);</span><br><span class="line">id objc_getAssociatedObject(id object, const void *key);</span><br><span class="line">void objc_removeAssociatedObjects(id object);</span><br></pre></td></tr></table></figure></p>
+<p>基本说明：<br>    关联对象就是runTime界的NSMutableDictionary</p>
+<ul>
+<li>objc_setAssociatedObject   相当于 setValue:forKey 进行关联value对象</li>
+<li>objc_getAssociatedObject   用来读取对象</li>
+<li>objc_AssociationPolicy     是设定该value在object内的属性，即 assign，retain，nonatomic，copy等</li>
+<li>objc_removeAssociatedObjects   函数来移除一个关联对象，或者使用 objc_setAssociatedObject函数将key指定的关联对象设置为nil。</li>
+</ul>
+<p>相关参数：</p>
+<ul>
+<li>key：要保证全局唯一，key与关联的对象是一一对应关系。必须全局唯一。通常用@selector(methodName)作为key。</li>
+<li>value：要关联的对象。</li>
+<li>policy：关联策略。有五种关联策略。<ul>
+<li>OBJC_ASSOCIATION_ASSIGN   等价于 @property(assign)</li>
+<li>OBJC_ASSOCIATION_RETAIN_NONATOMIC   等价于 @property(strong, nonatomic)。</li>
+<li>OBJC_ASSOCIATION_COPY_NONATOMIC     等价于 @property(copy, nonatomic)。</li>
+<li>OBJC_ASSOCIATION_RETAIN    等价于 @property(strong, atomic)。</li>
+<li>OBJC_ASSOCIATION_COPY      等价于 @property(copy, atomic)。</li>
+</ul>
+</li>
+</ul>
+<p>FDTemplateLayoutCell 中第二个参数近一步优化，出现了_cmd代替了&amp;btnKey 或者 @selector(methodName)。<br>因为_cmd在Objective-C的方法中表示当前放的selector，正如同self表示当前方法调用的对象实例。</p>
+<p>至此，设置关联对象关键key，一共有三种写法：</p>
+<ol>
+<li>静态变量&amp;btnKey</li>
+<li>@selector(methodName)</li>
+<li>_cmd</li>
+</ol>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2019-03-28</span><i class="fa fa-tag"></i><a class="tag" href="/tags/runtime-关联对象/" title="runtime;关联对象">runtime;关联对象 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2019/03/28/runtime之objc-setAssociatedObject/,过把感情瘾,runtime之objc_setAssociatedObject.md,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2018/12/14/hello-world/" title="Hello World">Próximo post</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
